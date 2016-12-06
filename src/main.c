@@ -88,14 +88,7 @@ void sdl_set_title(char *name) {
 }
 
 void init_sdl(void /*char *rom_name*/) {
-   // int surface_type = (CF_BOOL(cf_get_item_by_name("hwsurface"))? SDL_HWSURFACE : SDL_SWSURFACE);
 
-
-//    char *nomouse = getenv("SDL_NOMOUSE");
-//    SDL_Surface *icon;
-
-//    int x = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE);
-//    char *y = SDL_GetError();
     
 #ifdef GP2X
     atexit(gp2x_quit);
@@ -108,30 +101,11 @@ void init_sdl(void /*char *rom_name*/) {
 	exit(-1);
     }
 
-   // buffer = SDL_CreateRGBSurface(surface_type, 352, 256, 16, 0xF800, 0x7E0,
-//				  0x1F, 0);
-
-
-
-//    SDL_FillRect(buffer,NULL,SDL_MapRGB(buffer->format,0xE5,0xE5,0xE5));
-
-//    fontbuf = SDL_CreateRGBSurfaceFrom(font_image.pixel_data, font_image.width, font_image.height
-//				       , 24, font_image.width * 3, 0xFF0000, 0xFF00, 0xFF, 0);
-//    SDL_SetColorKey(fontbuf,SDL_SRCCOLORKEY,SDL_MapRGB(fontbuf->format,0xFF,0,0xFF));
-//    fontbuf=SDL_DisplayFormat(fontbuf);
-//    icon = SDL_CreateRGBSurfaceFrom(gngeo_icon.pixel_data, gngeo_icon.width,
-//				    gngeo_icon.height, gngeo_icon.bytes_per_pixel*8,
-//				    gngeo_icon.width * gngeo_icon.bytes_per_pixel,
-//				    0xFF, 0xFF00, 0xFF0000, 0);
-
-//    SDL_WM_SetIcon(icon,NULL);
 
     calculate_hotkey_bitmasks();  
  
 	init_event();
 
-    //if (nomouse == NULL)
-	//SDL_ShowCursor(SDL_DISABLE);
 }
 static void catch_me(int signo) {
 	printf("Catch a sigsegv\n");

@@ -354,7 +354,6 @@ void main_loop(void) {
 		if (conf.test_switch == 1)
 			conf.test_switch = 0;
 
-		//neo_emu_done=
 		if (handle_event()) {
 			int interp = interpolation;
 //			SDL_BlitSurface(buffer, &buf_rect, state_img, &screen_rect);
@@ -371,10 +370,6 @@ void main_loop(void) {
 			reset_event();
 		}
 
-        
-
-//		if (slow_motion)
-//			SDL_Delay(100);
 
 #ifndef ENABLE_940T
 		if (conf.sound) {

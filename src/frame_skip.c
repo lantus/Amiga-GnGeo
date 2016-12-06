@@ -155,12 +155,7 @@ int frame_skip(int init)
 
     nbFrame++;
     nbFrame_moy++;
-/*
-  if(bench && totalFrame++>=5000) {
-  printf("average fps=%f \n",(TICKS_PER_SEC*5000.0/(get_ticks()-bench)));
-  exit(0);
-  }
-*/
+ 
     if (conf.show_fps) {
 	    if (get_ticks() - sec >= TICKS_PER_SEC) {
 		    //printf("%d\n",nbFrame);

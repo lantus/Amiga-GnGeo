@@ -7,7 +7,9 @@ typedef unsigned char uint8_t;
 typedef unsigned char byte;
 
 #define HAVE_ATEXIT 1
-#define ALIGNLONGS 1
+
+#define DIRECTRAM 1
+
 /* Version number of package */
 #define VERSION "0.7a"
 #define DATA_DIRECTORY "."
