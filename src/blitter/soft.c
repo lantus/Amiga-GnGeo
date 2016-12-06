@@ -61,50 +61,8 @@ static UWORD emptypointer[] = {
 struct Window *_hardwareWindow;
 /** Hardware screen */
 struct Screen *_hardwareScreen;
-// Hardware double buffering.
-struct ScreenBuffer *_hardwareScreenBuffer[2];
-byte _currentScreenBuffer;
-
-#define REG(xn, parm) parm __asm(#xn)
-#define REGARGS __regargs
-#define STDARGS __stdargs
-#define SAVEDS __saveds
-#define ALIGNED __attribute__ ((aligned(4))
-#define FAR
-#define CHIP
-#define INLINE __inline__
-
-extern void REGARGS c2p1x1_8_c5_bm_040(
-REG(d0, UWORD chunky_x),
-REG(d1, UWORD chunky_y),
-REG(d2, UWORD offset_x),
-REG(d3, UWORD offset_y),
-REG(a0, UBYTE *chunky_buffer),
-REG(a1, struct BitMap *bitmap));
-
-extern void REGARGS c2p1x1_6_c5_bm_040(
-REG(d0, UWORD chunky_x),
-REG(d1, UWORD chunky_y),
-REG(d2, UWORD offset_x),
-REG(d3, UWORD offset_y),
-REG(a0, UBYTE *chunky_buffer),
-REG(a1, struct BitMap *bitmap));
-
-extern void REGARGS c2p1x1_8_c5_bm(
-REG(d0, UWORD chunky_x),
-REG(d1, UWORD chunky_y),
-REG(d2, UWORD offset_x),
-REG(d3, UWORD offset_y),
-REG(a0, UBYTE *chunky_buffer),
-REG(a1, struct BitMap *bitmap));
-
-extern void REGARGS c2p1x1_6_c5_bm(
-REG(d0, UWORD chunky_x),
-REG(d1, UWORD chunky_y),
-REG(d2, UWORD offset_x),
-REG(d3, UWORD offset_y),
-REG(a0, UBYTE *chunky_buffer),
-REG(a1, struct BitMap *bitmap));
+ 
+ 
 static int    firsttime=1;
 
 extern Uint32 *current_pc_pal;
@@ -132,25 +90,16 @@ void initAmigaGraphics(void)
 
 
     _hardwareWindow = NULL;
-    _hardwareScreenBuffer[0] = NULL;
-    _hardwareScreenBuffer[1] = NULL;
-    _currentScreenBuffer = 0;
+ 
     _hardwareScreen = NULL;
         firsttime = 0;
-        bufferpixels = (unsigned char *)malloc(304*224*2);
-
-        //if (M_CheckParm ("-ntsc"))
-//        {
-//            printf("I_InitGraphics: NTSC mode set \n");
-            //modeId = NTSC_MONITOR_ID;
-//        }
-//        else
-            modeId = PAL_MONITOR_ID;
+        bufferpixels = (unsigned char *)malloc(352*256*2);
+ 
 
 
        modeId = BestCModeIDTags(CYBRBIDTG_NominalWidth, 320,
 				      CYBRBIDTG_NominalHeight, 240,
-				      CYBRBIDTG_Depth,32,
+				      CYBRBIDTG_Depth,16,
 				      TAG_DONE );
 
 
@@ -158,7 +107,12 @@ void initAmigaGraphics(void)
           printf("Could not find a valid screen mode");
           exit(-1);
         }
-
+struct Rectangle rect;
+    rect.MinX = 16;
+    rect.MinY = 16;
+    rect.MaxX = 304;
+    rect.MaxY = 224;
+    
          _hardwareScreen = OpenScreenTags(NULL,
                          SA_Depth, 16,
                          SA_DisplayID, modeId,
@@ -171,22 +125,15 @@ void initAmigaGraphics(void)
                          SA_Draggable, FALSE,
                          SA_Exclusive, TRUE,
                          SA_AutoScroll, FALSE,
+                          SA_DClip,       (ULONG)&rect,
                          TAG_END);
-
-
-        // Create the hardware screen.
-
-
-        _hardwareScreenBuffer[0] = AllocScreenBuffer(_hardwareScreen, NULL, SB_SCREEN_BITMAP);
-        _hardwareScreenBuffer[1] = AllocScreenBuffer(_hardwareScreen, NULL, 0);
-
-        _currentScreenBuffer = 1;
+ 
 
         _hardwareWindow = OpenWindowTags(NULL,
                       	    WA_Left, 16,
                 			WA_Top, 16,
-                			WA_Width, 304,
-                			WA_Height, 224,
+                			WA_Width, 320,
+                			WA_Height, 240,
                 			WA_Title, NULL,
         					SA_AutoScroll, FALSE,
                 			WA_CustomScreen, (ULONG)_hardwareScreen,
@@ -195,7 +142,9 @@ void initAmigaGraphics(void)
                 			WA_DragBar, FALSE,
                 			WA_Activate, TRUE,
                 			WA_SimpleRefresh, TRUE,
-                			WA_NoCareRefresh, TRUE,                        		      		 
+                			WA_NoCareRefresh, TRUE, 
+                            WA_IDCMP,           IDCMP_RAWKEY|IDCMP_MOUSEBUTTONS|IDCMP_MOUSEMOVE,    
+                            WA_Flags,           WFLG_REPORTMOUSE|WFLG_RMBTRAP,                   		      		 
                       	    TAG_END);
 
         
@@ -203,10 +152,8 @@ void initAmigaGraphics(void)
         theRastPort=_hardwareWindow->RPort;
         theBitMap=theRastPort->BitMap;
     
-        SetPointer (_hardwareWindow, emptypointer, 1, 16, 0, 0);
-
-        videoBuffer = (unsigned char *) (bufferpixels);
-
+        SetPointer (_hardwareWindow, emptypointer, 0, 0, 0, 0);
+ 
         initialized = true;
         
         memset (bufferpixels,0,304*224*2);
@@ -220,33 +167,18 @@ void initAmigaGraphics(void)
 int
 blitter_soft_init()
 {
-    screen_rect.x = 0;
-    screen_rect.y = 0;
+    screen_rect.x = 16;
+    screen_rect.y = 16;
     screen_rect.w = 304;
     screen_rect.h = 224;
 
-    visible_area.x = 16;
-    visible_area.y = 16;
-    visible_area.w = 320;
+    visible_area.x = 0;
+    visible_area.y = 0 ;
+    visible_area.w = 304;
     visible_area.h = 224;
 
 	Uint32 width = visible_area.w;
 	Uint32 height = visible_area.h;
-#ifdef GP2X
-
-#else
-
-	//int hw_surface=(CF_BOOL(cf_get_item_by_name("hwsurface"))?SDL_HWSURFACE:SDL_SWSURFACE);
-#endif
-	//int screen_size=CF_BOOL(cf_get_item_by_name("screen320"));
-#ifdef DEVKIT8000
-	Uint32 sdl_flags = hw_surface|(fullscreen?SDL_FULLSCREEN:0)|SDL_DOUBLEBUF;
-
-	screen_rect.w=visible_area.w;
-	screen_rect.h=240;
-	height=240;
-#else
-
 
 
 	if (vsync) {
@@ -263,7 +195,6 @@ blitter_soft_init()
 	screen_rect.h=visible_area.h;
 
 
-#endif
 	if (neffect!=0)	scale =1;
 	if (scale == 1) {
 	    width *=effect[neffect].x_ratio;
@@ -276,15 +207,10 @@ blitter_soft_init()
 
 
 	initAmigaGraphics();
-
-
+	
 	return TRUE;
 }
 
-
-void WritePixelArray16New( APTR SrcRect, UWORD SrcX, UWORD SrcY, UWORD SrcMod,
-struct RastPort * RastP, UWORD DestX, UWORD DestY, UWORD SizeX, UWORD SizeY );
- 
 
   ULONG eclocks_per_second; /* EClock frequency in Hz */
  extern char fps_str[32];
@@ -306,7 +232,7 @@ static void video_do_fps (struct RastPort *rp, int yoffset)
     msg[2] = (x % 10) + '0';
     msg[3] = '\0';
     Move (rp, 24, yoffset + 6);
-    Text (rp, fps_str, 3);
+    Text (rp, fps_str, 2);
   }
   start_time = end_time;
 }
@@ -314,12 +240,19 @@ static void video_do_fps (struct RastPort *rp, int yoffset)
  
  
 void blitter_soft_update()
-{
-    
-WritePixelArray16New(bufferpixels,16,16,640,theRastPort,0,0,320,224);
+{    
+    ULONG  DestMod = 0;
+    ULONG * pDest  = NULL;
+    struct TagItem mesTags[] = {{LBMI_BASEADDRESS, (ULONG) &pDest},
+       {LBMI_BYTESPERROW, (ULONG) &DestMod},
+       {TAG_END}};
 
-video_do_fps(theRastPort,0);
+    APTR  handle  = LockBitMapTagList( theRastPort->BitMap, &mesTags[0] );
+    CopyMemQuick(bufferpixels + 24    ,pDest,  0x26000);
+    video_do_fps(theRastPort,0);        
+    UnLockBitMap( handle );  
 }
+
     
 void
 blitter_soft_close()    
@@ -330,65 +263,4 @@ void
 blitter_soft_fullscreen() {
  
 }
-
-
-void WritePixelArray16New( APTR SrcRect, UWORD SrcX, UWORD SrcY, UWORD SrcMod, 
-struct RastPort * RastP, UWORD DestX, UWORD DestY, UWORD SizeX, UWORD SizeY )
-{
-    ULONG  DestMod = 0;
-    ULONG * pDest  = NULL;
-    struct TagItem mesTags[] = {{LBMI_BASEADDRESS, (ULONG) &pDest},
-       {LBMI_BYTESPERROW, (ULONG) &DestMod},
-       {TAG_END}};
-    
-    
-    APTR  handle  = LockBitMapTagList( RastP->BitMap, &mesTags[0] );
-
-   if( handle )
-   {    
-        UWORD curDestX = 0;
-        UWORD curSrcX = 0;
-        UBYTE * pSrc  = (UBYTE*)SrcRect;
-        
-        pSrc+=(SrcY*SrcMod)+(SrcX);
-        
-        for( ; SizeY > 0; DestY++, SizeY-- )
-        {
-           for(   curDestX = DestX, curSrcX = SrcX;
-           curDestX < (DestX+SizeX); curDestX++, curSrcX++ )
-           {
-               ULONG pixel=*((UWORD*)pSrc);   
-               pSrc+=2;        
-               *(pDest++)= 0xFF000000|(((pixel&0xF800)<<8)|((pixel&0x7E0)<<5)|(pixel&0x1F)<<3);
-               pixel=*((UWORD*)pSrc);
-               pSrc+=2;
-               *(pDest++)= 0xFF000000|(((pixel&0xF800)<<8)|((pixel&0x7E0)<<5)|(pixel&0x1F)<<3);                                                   
-               pixel=*((UWORD*)pSrc);               
-               pSrc+=2;
-               *(pDest++)= 0xFF000000|(((pixel&0xF800)<<8)|((pixel&0x7E0)<<5)|(pixel&0x1F)<<3);
-               pixel=*((UWORD*)pSrc);                           
-               pSrc+=2;
-               *(pDest++)= 0xFF000000|(((pixel&0xF800)<<8)|((pixel&0x7E0)<<5)|(pixel&0x1F)<<3);
-               pixel=*((UWORD*)pSrc);
-               pSrc+=2;
-               *(pDest++)= 0xFF000000|(((pixel&0xF800)<<8)|((pixel&0x7E0)<<5)|(pixel&0x1F)<<3);
-               pixel=*((UWORD*)pSrc);
-               pSrc+=2;
-               *(pDest++)= 0xFF000000|(((pixel&0xF800)<<8)|((pixel&0x7E0)<<5)|(pixel&0x1F)<<3);
-               pixel=*((UWORD*)pSrc);
-               pSrc+=2;
-               *(pDest++)= 0xFF000000|(((pixel&0xF800)<<8)|((pixel&0x7E0)<<5)|(pixel&0x1F)<<3);
-               pixel=*((UWORD*)pSrc);
-               pSrc+=2;
-               *(pDest++)= 0xFF000000|(((pixel&0xF800)<<8)|((pixel&0x7E0)<<5)|(pixel&0x1F)<<3);                                                            
- 
-                curDestX+=7;
-                curSrcX+=7;
-           }
-
-        }
-
-        UnLockBitMap( handle );
-   }
-}                         
-                         
+                  
