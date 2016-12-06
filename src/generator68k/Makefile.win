@@ -1,0 +1,36 @@
+# Project: generator68k
+# Compiler: m68k-Amiga-OS3
+# Compiler Type: MingW 3
+# Makefile created by wxDev-C++ 6.10.2 on 04/02/16 13:07
+
+CPP       = m68k-amigaos-g++.exe
+CC        = m68k-amigaos-gcc.exe
+WINDRES   = windres.exe
+OBJ       = tab68k2.o gen68k.o
+LINKOBJ   = tab68k2.o gen68k.o
+LIBS      = -L"C:/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/lib" -L"C:/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/lib/libb/libnix" -s -noixemul -noixemul  
+INCS      = -I"C:/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include" -I"C:/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include/SDL"
+CXXINCS   = -I"C:/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include" -I"C:/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include/SDL"
+RCINCS    = --include-dir "C:/CROSSC~1/AMIDEV~1/include"
+BIN       = generator68k.exe
+DEFINES   = 
+CXXFLAGS  = $(CXXINCS) $(DEFINES)   -s -noixemul
+CFLAGS    = $(INCS) $(DEFINES)   -s -noixemul
+GPROF     = gprof.exe
+RM        = rm -f
+LINK      = m68k-amigaos-g++.exe
+
+.PHONY: all all-before all-after clean clean-custom
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	$(RM) $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(LINK) $(LINKOBJ) -o "generator68k.exe" $(LIBS)
+
+tab68k2.o: $(GLOBALDEPS) tab68k2.c generator.h
+	$(CPP) -c tab68k2.c -o tab68k2.o $(CXXFLAGS)
+
+gen68k.o: $(GLOBALDEPS) gen68k.c generator.h def68k-iibs.h
+	$(CC) -c gen68k.c -o gen68k.o $(CFLAGS)

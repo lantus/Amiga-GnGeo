@@ -1,0 +1,243 @@
+# Project: gngeo
+# Compiler: m68k-Amiga-OS3
+# Compiler Type: MingW 3
+# Makefile created by wxDev-C++ 6.10.2 on 05/12/16 00:14
+
+CPP       = m68k-amigaos-g++.exe
+CC        = m68k-amigaos-gcc.exe
+WINDRES   = windres.exe
+OBJ       = obj/soft.o obj/2610intf.o obj/ym2610.o obj/conf.o obj/cyclone_interf.o obj/debug.o obj/drz80_interf.o obj/emu.o obj/event.o obj/fileio.o obj/frame_skip.o obj/generator68k_interf.o obj/list.o obj/main.o obj/mame_layer.o obj/mamez80_interf.o obj/memory.o obj/messages.o obj/neoboot.o obj/neocrypt.o obj/pd4990a.o obj/profiler.o obj/raze_interf.o obj/resfile.o obj/roms.o obj/screen.o obj/sound.o obj/star_interf.o obj/state.o obj/stb_image.o obj/stb_zlib.o obj/timer.o obj/transpack.o obj/unzip.o obj/video.o obj/cpu68k.o obj/cpu68k-0.o obj/cpu68k-1.o obj/cpu68k-2.o obj/cpu68k-3.o obj/cpu68k-4.o obj/cpu68k-5.o obj/cpu68k-6.o obj/cpu68k-7.o obj/cpu68k-8.o obj/cpu68k-9.o obj/cpu68k-a.o obj/cpu68k-b.o obj/cpu68k-c.o obj/cpu68k-d.o obj/cpu68k-e.o obj/cpu68k-f.o obj/reg68k.o obj/diss68k.o obj/z80.o obj/tab68k2.o obj/adler32.o obj/compress.o obj/crc32.o obj/deflate.o obj/gzclose.o obj/gzlib.o obj/gzread.o obj/gzwrite.o obj/infback.o obj/inffast.o obj/inflate.o obj/inftrees.o obj/trees.o obj/uncompr.o obj/zutil.o
+LINKOBJ   = obj/soft.o obj/2610intf.o obj/ym2610.o obj/conf.o obj/cyclone_interf.o obj/debug.o obj/drz80_interf.o obj/emu.o obj/event.o obj/fileio.o obj/frame_skip.o obj/generator68k_interf.o obj/list.o obj/main.o obj/mame_layer.o obj/mamez80_interf.o obj/memory.o obj/messages.o obj/neoboot.o obj/neocrypt.o obj/pd4990a.o obj/profiler.o obj/raze_interf.o obj/resfile.o obj/roms.o obj/screen.o obj/sound.o obj/star_interf.o obj/state.o obj/stb_image.o obj/stb_zlib.o obj/timer.o obj/transpack.o obj/unzip.o obj/video.o obj/cpu68k.o obj/cpu68k-0.o obj/cpu68k-1.o obj/cpu68k-2.o obj/cpu68k-3.o obj/cpu68k-4.o obj/cpu68k-5.o obj/cpu68k-6.o obj/cpu68k-7.o obj/cpu68k-8.o obj/cpu68k-9.o obj/cpu68k-a.o obj/cpu68k-b.o obj/cpu68k-c.o obj/cpu68k-d.o obj/cpu68k-e.o obj/cpu68k-f.o obj/reg68k.o obj/diss68k.o obj/z80.o obj/tab68k2.o obj/adler32.o obj/compress.o obj/crc32.o obj/deflate.o obj/gzclose.o obj/gzlib.o obj/gzread.o obj/gzwrite.o obj/infback.o obj/inffast.o obj/inflate.o obj/inftrees.o obj/trees.o obj/uncompr.o obj/zutil.o
+LIBS      = -L"F:/Development/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/lib" -L"F:/Development/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/lib/libb/libnix" -s -noixemul src/c2p1x1_8_c5_bm_040.o  
+INCS      = -I"F:/Development/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include" -I"." -I"src"
+CXXINCS   = -I"F:/Development/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include" -I"." -I"src"
+RCINCS    = --include-dir "F:/Development/CrossCompiler/AmiDevCpp/include"
+BIN       = release/gngeo.exe
+DEFINES   =  -DWORDS_BIGENDIAN -D__AMIGA__ -DAMIGA -DHAVE_CONFIG_H -DUSE_GENERATOR68K -DUSE_MAMEZ80
+CXXFLAGS  = $(CXXINCS) $(DEFINES) -m68030 -ffast-math -fsingle-precision-constant -fweb -frename-registers  -finline-functions -funit-at-a-time -fomit-frame-pointer    -s -noixemul -fexpensive-optimizations -O3
+CFLAGS    = $(INCS) $(DEFINES) -m68030 -ffast-math -fsingle-precision-constant -fweb -frename-registers  -finline-functions -funit-at-a-time -fomit-frame-pointer    -s -noixemul -fexpensive-optimizations -O3
+GPROF     = gprof.exe
+RM        = rm -f
+LINK      = m68k-amigaos-g++.exe
+
+.PHONY: all all-before all-after clean clean-custom
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	$(RM) $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(LINK) $(LINKOBJ) -o "release\gngeo.exe" $(LIBS)
+
+obj/soft.o: $(GLOBALDEPS) src/blitter/soft.c src/emu.h src/screen.h src/emu.h src/list.h src/video.h src/emu.h src/effect.h src/emu.h src/conf.h src/gp2x.h src/unzip.h src/stb_zlib.h
+	$(CC) -c src/blitter/soft.c -o obj/soft.o $(CFLAGS)
+
+obj/2610intf.o: $(GLOBALDEPS) src/ym2610/2610intf.c src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/emu.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/timer.h
+	$(CC) -c src/ym2610/2610intf.c -o obj/2610intf.o $(CFLAGS)
+
+obj/ym2610.o: $(GLOBALDEPS) src/ym2610/ym2610.c src/ym2610/mvs.h src/emu.h src/state.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/ym2610/ym2610.h
+	$(CC) -c src/ym2610/ym2610.c -o obj/ym2610.o $(CFLAGS)
+
+obj/conf.o: $(GLOBALDEPS) src/conf.c src/getopt.h src/getopt.h src/unzip.h src/stb_zlib.h src/conf.h src/fileio.h src/emu.h src/fileio.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h
+	$(CC) -c src/conf.c -o obj/conf.o $(CFLAGS)
+
+obj/cyclone_interf.o: $(GLOBALDEPS) src/cyclone_interf.c src/cyclone/Cyclone.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/emu.h src/state.h src/debug.h src/video.h src/conf.h
+	$(CC) -c src/cyclone_interf.c -o obj/cyclone_interf.o $(CFLAGS)
+
+obj/debug.o: $(GLOBALDEPS) src/debug.c src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h
+	$(CC) -c src/debug.c -o obj/debug.o $(CFLAGS)
+
+obj/drz80_interf.o: $(GLOBALDEPS) src/drz80_interf.c src/emu.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/drz80/DrZ80.h src/state.h
+	$(CC) -c src/drz80_interf.c -o obj/drz80_interf.o $(CFLAGS)
+
+obj/emu.o: $(GLOBALDEPS) src/emu.c src/emu.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/frame_skip.h src/pd4990a.h src/memory.h src/messages.h src/profiler.h src/debug.h src/timer.h src/ym2610/2610intf.h src/sound.h src/screen.h src/emu.h src/list.h src/neocrypt.h src/conf.h src/gp2x.h src/menu.h src/list.h src/event.h
+	$(CC) -c src/emu.c -o obj/emu.o $(CFLAGS)
+
+obj/event.o: $(GLOBALDEPS) src/event.c src/emu.h src/screen.h src/emu.h src/list.h src/event.h src/conf.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h
+	$(CC) -c src/event.c -o obj/event.o $(CFLAGS)
+
+obj/fileio.o: $(GLOBALDEPS) src/fileio.c src/unzip.h src/stb_zlib.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/video.h src/emu.h src/fileio.h src/neocrypt.h src/screen.h src/emu.h src/list.h src/conf.h src/sound.h src/transpack.h src/menu.h src/list.h src/frame_skip.h
+	$(CC) -c src/fileio.c -o obj/fileio.o $(CFLAGS)
+
+obj/frame_skip.o: $(GLOBALDEPS) src/frame_skip.c src/frame_skip.h src/messages.h src/emu.h src/conf.h
+	$(CC) -c src/frame_skip.c -o obj/frame_skip.o $(CFLAGS)
+
+obj/generator68k_interf.o: $(GLOBALDEPS) src/generator68k_interf.c src/generator68k/generator.h src/emu.h src/generator68k/cpu68k.h src/generator68k/reg68k.h src/generator68k/mem68k.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/emu.h src/state.h src/debug.h src/conf.h
+	$(CC) -c src/generator68k_interf.c -o obj/generator68k_interf.o $(CFLAGS)
+
+obj/list.o: $(GLOBALDEPS) src/list.c src/list.h
+	$(CC) -c src/list.c -o obj/list.o $(CFLAGS)
+
+obj/main.o: $(GLOBALDEPS) src/main.c src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/font.h src/fileio.h src/video.h src/emu.h src/screen.h src/emu.h src/list.h src/emu.h src/sound.h src/messages.h src/memory.h src/video.h src/ym2610/2610intf.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/debug.h src/blitter.h src/effect.h src/emu.h src/conf.h src/transpack.h src/gngeo_icon.h src/event.h src/menu.h src/list.h src/frame_skip.h src/gp2x.h
+	$(CC) -c src/main.c -o obj/main.o $(CFLAGS)
+
+obj/mame_layer.o: $(GLOBALDEPS) src/mame_layer.c src/mame_layer.h src/emu.h src/roms.h
+	$(CC) -c src/mame_layer.c -o obj/mame_layer.o $(CFLAGS)
+
+obj/mamez80_interf.o: $(GLOBALDEPS) src/mamez80_interf.c src/emu.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/mamez80/z80.h src/emu.h src/state.h
+	$(CC) -c src/mamez80_interf.c -o obj/mamez80_interf.o $(CFLAGS)
+
+obj/memory.o: $(GLOBALDEPS) src/memory.c src/emu.h src/video.h src/emu.h src/memory.h src/video.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/pd4990a.h src/memory.h src/transpack.h
+	$(CC) -c src/memory.c -o obj/memory.o $(CFLAGS)
+
+obj/messages.o: $(GLOBALDEPS) src/messages.c src/messages.h src/video.h src/emu.h src/emu.h src/timer.h src/frame_skip.h src/screen.h src/emu.h src/list.h src/sound.h
+	$(CC) -c src/messages.c -o obj/messages.o $(CFLAGS)
+
+obj/neoboot.o: $(GLOBALDEPS) src/neoboot.c src/mame_layer.h src/emu.h src/roms.h
+	$(CC) -c src/neoboot.c -o obj/neoboot.o $(CFLAGS)
+
+obj/neocrypt.o: $(GLOBALDEPS) src/neocrypt.c src/emu.h src/resfile.h src/roms.h src/mame_layer.h src/emu.h src/roms.h src/menu.h src/list.h
+	$(CC) -c src/neocrypt.c -o obj/neocrypt.o $(CFLAGS)
+
+obj/pd4990a.o: $(GLOBALDEPS) src/pd4990a.c src/pd4990a.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/state.h
+	$(CC) -c src/pd4990a.c -o obj/pd4990a.o $(CFLAGS)
+
+obj/profiler.o: $(GLOBALDEPS) src/profiler.c src/emu.h src/profiler.h src/messages.h
+	$(CC) -c src/profiler.c -o obj/profiler.o $(CFLAGS)
+
+obj/raze_interf.o: $(GLOBALDEPS) src/raze_interf.c src/emu.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/raze/raze.h
+	$(CC) -c src/raze_interf.c -o obj/raze_interf.o $(CFLAGS)
+
+obj/resfile.o: $(GLOBALDEPS) src/resfile.c src/emu.h src/roms.h src/resfile.h src/roms.h src/unzip.h src/stb_zlib.h src/conf.h src/stb_image.h
+	$(CC) -c src/resfile.c -o obj/resfile.o $(CFLAGS)
+
+obj/roms.o: $(GLOBALDEPS) src/roms.c src/emu.h src/roms.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/unzip.h src/video.h src/transpack.h src/conf.h src/resfile.h src/roms.h src/menu.h src/list.h src/gp2x.h
+	$(CC) -c src/roms.c -o obj/roms.o $(CFLAGS)
+
+obj/screen.o: $(GLOBALDEPS) src/screen.c src/emu.h src/screen.h src/emu.h src/list.h src/video.h src/emu.h src/conf.h src/blitter.h src/effect.h src/emu.h
+	$(CC) -c src/screen.c -o obj/screen.o $(CFLAGS)
+
+obj/sound.o: $(GLOBALDEPS) src/sound.c src/emu.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/profiler.h src/ym2610/ym2610.h
+	$(CC) -c src/sound.c -o obj/sound.o $(CFLAGS)
+
+obj/star_interf.o: $(GLOBALDEPS) src/star_interf.c src/star/starcpu.h src/star/cpudebug.h src/raze/raze.h src/emu.h src/video.h src/emu.h src/memory.h src/video.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/pd4990a.h src/memory.h src/state.h src/debug.h
+	$(CC) -c src/star_interf.c -o obj/star_interf.o $(CFLAGS)
+
+obj/state.o: $(GLOBALDEPS) src/state.c src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/state.h src/fileio.h src/screen.h src/emu.h src/list.h src/sound.h src/emu.h
+	$(CC) -c src/state.c -o obj/state.o $(CFLAGS)
+
+obj/stb_image.o: $(GLOBALDEPS) src/stb_image.c src/stb_image.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/stb_zlib.h
+	$(CC) -c src/stb_image.c -o obj/stb_image.o $(CFLAGS)
+
+obj/stb_zlib.o: $(GLOBALDEPS) src/stb_zlib.c src/stb_zlib.h src/memory.h src/video.h src/emu.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h
+	$(CC) -c src/stb_zlib.c -o obj/stb_zlib.o $(CFLAGS)
+
+obj/timer.o: $(GLOBALDEPS) src/timer.c src/emu.h src/timer.h src/state.h src/emu.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h
+	$(CC) -c src/timer.c -o obj/timer.o $(CFLAGS)
+
+obj/transpack.o: $(GLOBALDEPS) src/transpack.c src/emu.h src/transpack.h
+	$(CC) -c src/transpack.c -o obj/transpack.o $(CFLAGS)
+
+obj/unzip.o: $(GLOBALDEPS) src/unzip.c src/stb_zlib.h src/unzip.h src/stb_zlib.h
+	$(CC) -c src/unzip.c -o obj/unzip.o $(CFLAGS)
+
+obj/video.o: $(GLOBALDEPS) src/video.c src/video.h src/emu.h src/memory.h src/video.h src/ym2610/2610intf.h src/ym2610/ym2610.h src/ym2610/mvs.h src/emu.h src/timer.h src/state.h src/emu.h src/roms.h src/gp2x.h src/unzip.h src/stb_zlib.h src/emu.h src/messages.h src/screen.h src/emu.h src/list.h src/frame_skip.h src/transpack.h src/video_template.h src/video_template.h src/video_template.h
+	$(CC) -c src/video.c -o obj/video.o $(CFLAGS)
+
+obj/cpu68k.o: $(GLOBALDEPS) src/generator68k/cpu68k.c src/generator68k/generator.h src/emu.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/def68k-iibs.h src/generator68k/def68k-proto.h src/generator68k/def68k-funcs.h
+	$(CC) -c src/generator68k/cpu68k.c -o obj/cpu68k.o $(CFLAGS)
+
+obj/cpu68k-0.o: $(GLOBALDEPS) src/generator68k/cpu68k-0.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-0.c -o obj/cpu68k-0.o $(CFLAGS)
+
+obj/cpu68k-1.o: $(GLOBALDEPS) src/generator68k/cpu68k-1.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-1.c -o obj/cpu68k-1.o $(CFLAGS)
+
+obj/cpu68k-2.o: $(GLOBALDEPS) src/generator68k/cpu68k-2.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-2.c -o obj/cpu68k-2.o $(CFLAGS)
+
+obj/cpu68k-3.o: $(GLOBALDEPS) src/generator68k/cpu68k-3.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-3.c -o obj/cpu68k-3.o $(CFLAGS)
+
+obj/cpu68k-4.o: $(GLOBALDEPS) src/generator68k/cpu68k-4.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-4.c -o obj/cpu68k-4.o $(CFLAGS)
+
+obj/cpu68k-5.o: $(GLOBALDEPS) src/generator68k/cpu68k-5.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-5.c -o obj/cpu68k-5.o $(CFLAGS)
+
+obj/cpu68k-6.o: $(GLOBALDEPS) src/generator68k/cpu68k-6.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-6.c -o obj/cpu68k-6.o $(CFLAGS)
+
+obj/cpu68k-7.o: $(GLOBALDEPS) src/generator68k/cpu68k-7.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-7.c -o obj/cpu68k-7.o $(CFLAGS)
+
+obj/cpu68k-8.o: $(GLOBALDEPS) src/generator68k/cpu68k-8.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-8.c -o obj/cpu68k-8.o $(CFLAGS)
+
+obj/cpu68k-9.o: $(GLOBALDEPS) src/generator68k/cpu68k-9.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-9.c -o obj/cpu68k-9.o $(CFLAGS)
+
+obj/cpu68k-a.o: $(GLOBALDEPS) src/generator68k/cpu68k-a.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-a.c -o obj/cpu68k-a.o $(CFLAGS)
+
+obj/cpu68k-b.o: $(GLOBALDEPS) src/generator68k/cpu68k-b.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-b.c -o obj/cpu68k-b.o $(CFLAGS)
+
+obj/cpu68k-c.o: $(GLOBALDEPS) src/generator68k/cpu68k-c.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-c.c -o obj/cpu68k-c.o $(CFLAGS)
+
+obj/cpu68k-d.o: $(GLOBALDEPS) src/generator68k/cpu68k-d.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-d.c -o obj/cpu68k-d.o $(CFLAGS)
+
+obj/cpu68k-e.o: $(GLOBALDEPS) src/generator68k/cpu68k-e.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-e.c -o obj/cpu68k-e.o $(CFLAGS)
+
+obj/cpu68k-f.o: $(GLOBALDEPS) src/generator68k/cpu68k-f.c src/generator68k/cpu68k-inline.h src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/reg68k.h
+	$(CC) -c src/generator68k/cpu68k-f.c -o obj/cpu68k-f.o $(CFLAGS)
+
+obj/reg68k.o: $(GLOBALDEPS) src/generator68k/reg68k.c src/generator68k/generator.h src/emu.h src/generator68k/registers.h src/generator68k/reg68k.h src/generator68k/cpu68k.h src/generator68k/mem68k.h src/generator68k/compile.h src/generator68k/generator.h src/generator68k/cpu68k.h
+	$(CC) -c src/generator68k/reg68k.c -o obj/reg68k.o $(CFLAGS)
+
+obj/diss68k.o: $(GLOBALDEPS) src/generator68k/diss68k.c src/generator68k/generator.h src/emu.h src/generator68k/cpu68k.h
+	$(CC) -c src/generator68k/diss68k.c -o obj/diss68k.o $(CFLAGS)
+
+obj/z80.o: $(GLOBALDEPS) src/mamez80/z80.c src/mamez80/z80.h src/emu.h src/mamez80/z80daa.h
+	$(CC) -c src/mamez80/z80.c -o obj/z80.o $(CFLAGS)
+
+obj/tab68k2.o: $(GLOBALDEPS) src/generator68k/tab68k2.c src/generator68k/generator.h src/emu.h
+	$(CC) -c src/generator68k/tab68k2.c -o obj/tab68k2.o $(CFLAGS)
+
+obj/adler32.o: $(GLOBALDEPS) ../zlib/adler32.c ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h
+	$(CC) -c ../zlib/adler32.c -o obj/adler32.o $(CFLAGS)
+
+obj/compress.o: $(GLOBALDEPS) ../zlib/compress.c ../zlib/zlib.h ../zlib/zconf.h
+	$(CC) -c ../zlib/compress.c -o obj/compress.o $(CFLAGS)
+
+obj/crc32.o: $(GLOBALDEPS) ../zlib/crc32.c ../zlib/crc32.h
+	$(CC) -c ../zlib/crc32.c -o obj/crc32.o $(CFLAGS)
+
+obj/deflate.o: $(GLOBALDEPS) ../zlib/deflate.c ../zlib/deflate.h ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h
+	$(CC) -c ../zlib/deflate.c -o obj/deflate.o $(CFLAGS)
+
+obj/gzclose.o: $(GLOBALDEPS) ../zlib/gzclose.c ../zlib/gzguts.h ../zlib/zlib.h ../zlib/zconf.h
+	$(CC) -c ../zlib/gzclose.c -o obj/gzclose.o $(CFLAGS)
+
+obj/gzlib.o: $(GLOBALDEPS) ../zlib/gzlib.c ../zlib/gzguts.h ../zlib/zlib.h ../zlib/zconf.h
+	$(CC) -c ../zlib/gzlib.c -o obj/gzlib.o $(CFLAGS)
+
+obj/gzread.o: $(GLOBALDEPS) ../zlib/gzread.c ../zlib/gzguts.h ../zlib/zlib.h ../zlib/zconf.h
+	$(CC) -c ../zlib/gzread.c -o obj/gzread.o $(CFLAGS)
+
+obj/gzwrite.o: $(GLOBALDEPS) ../zlib/gzwrite.c ../zlib/gzguts.h ../zlib/zlib.h ../zlib/zconf.h
+	$(CC) -c ../zlib/gzwrite.c -o obj/gzwrite.o $(CFLAGS)
+
+obj/infback.o: $(GLOBALDEPS) ../zlib/infback.c ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h ../zlib/inftrees.h ../zlib/inflate.h ../zlib/inffast.h
+	$(CC) -c ../zlib/infback.c -o obj/infback.o $(CFLAGS)
+
+obj/inffast.o: $(GLOBALDEPS) ../zlib/inffast.c ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h ../zlib/inftrees.h ../zlib/inflate.h ../zlib/inffast.h
+	$(CC) -c ../zlib/inffast.c -o obj/inffast.o $(CFLAGS)
+
+obj/inflate.o: $(GLOBALDEPS) ../zlib/inflate.c ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h ../zlib/inftrees.h ../zlib/inflate.h ../zlib/inffast.h
+	$(CC) -c ../zlib/inflate.c -o obj/inflate.o $(CFLAGS)
+
+obj/inftrees.o: $(GLOBALDEPS) ../zlib/inftrees.c ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h ../zlib/inftrees.h
+	$(CC) -c ../zlib/inftrees.c -o obj/inftrees.o $(CFLAGS)
+
+obj/trees.o: $(GLOBALDEPS) ../zlib/trees.c ../zlib/deflate.h ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h
+	$(CC) -c ../zlib/trees.c -o obj/trees.o $(CFLAGS)
+
+obj/uncompr.o: $(GLOBALDEPS) ../zlib/uncompr.c ../zlib/zlib.h ../zlib/zconf.h
+	$(CC) -c ../zlib/uncompr.c -o obj/uncompr.o $(CFLAGS)
+
+obj/zutil.o: $(GLOBALDEPS) ../zlib/zutil.c ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h
+	$(CC) -c ../zlib/zutil.c -o obj/zutil.o $(CFLAGS)

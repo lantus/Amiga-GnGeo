@@ -1,0 +1,33 @@
+# Project: mameZ80
+# Compiler: m68k-Amiga-OS3
+# Compiler Type: MingW 3
+# Makefile created by wxDev-C++ 6.10.2 on 04/02/16 13:46
+
+CPP       = m68k-amigaos-g++.exe
+CC        = m68k-amigaos-gcc.exe
+WINDRES   = windres.exe
+OBJ       = z80.o
+LINKOBJ   = z80.o
+LIBS      = -L"C:/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/lib" -L"C:/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/lib/libb/libnix" -s -noixemul -noixemul  
+INCS      = -I"C:/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include" -I"C:/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include/SDL"
+CXXINCS   = -I"C:/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include" -I"C:/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include/SDL"
+RCINCS    = --include-dir "C:/CROSSC~1/AMIDEV~1/include"
+BIN       = mameZ80.exe
+DEFINES   = 
+CXXFLAGS  = $(CXXINCS) $(DEFINES)   -s -noixemul
+CFLAGS    = $(INCS) $(DEFINES)   -s -noixemul
+GPROF     = gprof.exe
+RM        = rm -f
+LINK      = m68k-amigaos-gcc.exe
+
+.PHONY: all all-before all-after clean clean-custom
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	$(RM) $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(LINK) $(LINKOBJ) -o "mameZ80.exe" $(LIBS)
+
+z80.o: $(GLOBALDEPS) z80.c z80.h z80daa.h
+	$(CC) -c z80.c -o z80.o $(CFLAGS)
