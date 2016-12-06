@@ -262,15 +262,13 @@ int init_audio(void)
     ULONG sampleCount = (ULONG)floor(obtainedMixingfrequency / audioCallbackFrequency);
       
     // 32 bits (4 bytes) are required per sample for storage (16bit stereo).
-    ULONG sampleBufferSize = (sampleCount * AHI_SampleFrameSize(AHIST_M16S));
+    ULONG sampleBufferSize = (NB_SAMPLES * AHI_SampleFrameSize(AHIST_M16S));
 
     stream = (unsigned char *)AllocVec(sampleBufferSize, MEMF_PUBLIC|MEMF_CLEAR);
     memset(stream,0x00, sampleBufferSize);
     sample.ahisi_Type = AHIST_M16S;
     sample.ahisi_Address = stream; 
     sample.ahisi_Length = sampleBufferSize;
-    
-    printf("sampleBufferSize = %d\n",sampleBufferSize);
 
     AHI_LoadSound(0, AHIST_DYNAMICSAMPLE, &sample, actrl);
 
