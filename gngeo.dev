@@ -1,7 +1,7 @@
 [Project]
 FileName=gngeo.dev
 Name=gngeo
-UnitCount=71
+UnitCount=56
 PchHead=-1
 PchSource=-1
 Ver=3
@@ -39,7 +39,7 @@ ResourceIncludes=
 MakeIncludes=
 Compiler=-m68030 -ffast-math -fsingle-precision-constant -fweb -frename-registers _@@_-finline-functions -funit-at-a-time -fomit-frame-pointer _@@_
 CppCompiler=-m68030 -ffast-math -fsingle-precision-constant -fweb -frename-registers _@@_-finline-functions -funit-at-a-time -fomit-frame-pointer _@@_
-Linker=src/c2p1x1_8_c5_bm_040.o_@@_
+Linker=../zlib/bin/libz.a_@@_
 PreprocDefines=WORDS_BIGENDIAN_@@___AMIGA___@@_AMIGA_@@_HAVE_CONFIG_H_@@_USE_GENERATOR68K_@@_USE_MAMEZ80_@@_
 CompilerSettings=0000000001001000000000
 Icon=

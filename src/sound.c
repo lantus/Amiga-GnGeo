@@ -24,8 +24,12 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-//#include "SDL.h"
-//#include "streams.h"
+#include <devices/ahi.h>
+#include <exec/exec.h>
+#include <proto/ahi.h>
+#include <proto/dos.h>
+#include <proto/exec.h>
+ 
 #include "emu.h"
 #include "memory.h"
 #include "profiler.h"
@@ -42,7 +46,12 @@
 
 #endif
 
-//SDL_AudioSpec * desired, *obtain;
+#define USE_AHI_V4 TRUE
+
+#define CHANNELS   2
+#define MAXSAMPLES 16
+
+#define INT_FREQ   50
 
 #define MIXER_MAX_CHANNELS 16
 //#define CPU_FPS 60
@@ -56,62 +65,169 @@ Uint16 play_buffer[BUFFER_LEN];
 #define NB_SAMPLES 512 /* better resolution */
 #else
 //#define NB_SAMPLES 128
-#define NB_SAMPLES 64
+//#define NB_SAMPLES 64
 //#define NB_SAMPLES 512
 #endif
+Uint8 * stream = NULL;
 
-#ifndef USE_OSS
+static ULONG ahiID;
 
-void update_sdl_stream(void *userdata, Uint8 * stream, int len)
+APTR samples[MAXSAMPLES] = { 0 };
+struct AHISampleInfo sample;
+
+struct {
+  BOOL      FadeVolume;
+  Fixed     Volume;
+  sposition Position;
+} channelstate[CHANNELS];
+
+struct {
+  struct AHIEffDSPMask mask;
+  UBYTE                mode[CHANNELS];
+} maskeffect = {0};
+struct AHIEffDSPEcho   echoeffect = {0};
+
+struct Library      *AHIBase;
+struct MsgPort      *AHImp     = NULL;
+struct AHIRequest   *AHIio     = NULL;
+BYTE                 AHIDevice = -1;
+struct AHIAudioCtrl *actrl     = NULL;
+
+LONG mixfreq = 0;
+
+/* Prototypes */
+
+BOOL  OpenAHI(void);
+void  CloseAHI(void);
+BOOL  AllocAudio(void);
+void  FreeAudio(void);
+UWORD LoadSample(unsigned char * , ULONG );
+void  UnloadSample(UWORD );
+
+
+/******************************************************************************
+** PlayerFunc *****************************************************************
+******************************************************************************/
+
+  __interrupt  static void PlayerFunc(
+      struct Hook *hook,
+     struct AHIAudioCtrl *actrl,
+    APTR ignored) {
+
+ 
+  if (stream)
 {
-#ifdef ENABLE_940T
-	static Uint32 play_buffer_pos;
-#endif
-
-	PROFILER_START(PROF_SOUND);
-	//streamupdate(len);
+	YM2610Update_stream(NB_SAMPLES);
+	memcpy(stream, (Uint8 *) play_buffer, NB_SAMPLES << 2);
+}
 	
-#ifdef ENABLE_940T
-	if (shared_ctl->buf_pos >= play_buffer_pos && 
-	    shared_ctl->buf_pos <= play_buffer_pos + len) {
-		//printf("SOUND WARN 1 %d %d\n",shared_ctl->buf_pos,play_buffer_pos);
-		
-		return;
-	}
-	if (shared_ctl->buf_pos + shared_ctl->sample_len >= play_buffer_pos && 
-	    shared_ctl->buf_pos + shared_ctl->sample_len <= play_buffer_pos + len) {
-		//printf("SOUND WARN 2 %d %d\n",shared_ctl->buf_pos,play_buffer_pos);
-		
-		return;
-	}
-	if ( play_buffer_pos+len>SAMPLE_BUFLEN) {
-		unsigned int last=(SAMPLE_BUFLEN-play_buffer_pos);
-		memcpy(stream, (Uint8 *) shared_ctl->play_buffer+ play_buffer_pos, last);
-		memcpy(stream+last, (Uint8 *) shared_ctl->play_buffer, len-last);
-		//printf("Case 1\n");
-		play_buffer_pos=len-last;
-	} else {
-		memcpy(stream, (Uint8 *) shared_ctl->play_buffer+play_buffer_pos, len);
-		play_buffer_pos+=len;
-		//printf("Case 2\n");
-	}
+ 
+}
 
+struct Hook PlayerHook = {
+  0,0,
+  (ULONG (* )()) PlayerFunc,
+  NULL,
+  NULL,
+};
 
+/******************************************************************************
+**** OpenAHI ******************************************************************
+******************************************************************************/
+
+/* Open the device for low-level usage */
+
+BOOL OpenAHI(void) {
+
+  if(AHImp = CreateMsgPort()) {
+    if(AHIio = (struct AHIRequest *)CreateIORequest(
+        AHImp,sizeof(struct AHIRequest))) {
+
+#if USE_AHI_V4
+      AHIio->ahir_Version = 4;
 #else
-
-	YM2610Update_stream(len/4);
-	memcpy(stream, (Uint8 *) play_buffer, len);
-
+      AHIio->ahir_Version = 2;
 #endif
-	PROFILER_STOP(PROF_SOUND);
 
-}
-void dummy_stream(void *userdata, Uint8 * stream, int len) {
+      if(!(AHIDevice = OpenDevice(AHINAME, AHI_NO_UNIT,
+          (struct IORequest *) AHIio,NULL))) {
+        AHIBase = (struct Library *) AHIio->ahir_Std.io_Device;
+        return TRUE;
+      }
+    }
+  }
+  FreeAudio();
+  return FALSE;
 }
 
-int init_sdl_audio(void)
+
+/******************************************************************************
+**** CloseAHI *****************************************************************
+******************************************************************************/
+
+/* Close the device */
+
+void CloseAHI(void) {
+
+  if(! AHIDevice)
+    CloseDevice((struct IORequest *)AHIio);
+  AHIDevice=-1;
+  DeleteIORequest((struct IORequest *)AHIio);
+  AHIio=NULL;
+  DeleteMsgPort(AHImp);
+  AHImp=NULL;
+}
+
+
+/******************************************************************************
+**** AllocAudio ***************************************************************
+******************************************************************************/
+
+/* Ask user for an audio mode and allocate it */
+
+BOOL AllocAudio(void) {
+  struct AHIAudioModeRequester *req;
+  BOOL   rc = FALSE;
+
+ 
+  
+
+	    ahiID = AHI_BestAudioID(
+				     AHIDB_Stereo,TRUE,
+				     AHIDB_Panning,TRUE,
+				     AHIDB_Bits,8,
+				     AHIDB_MaxChannels,2,
+				     AHIDB_MinMixFreq,11025,
+				     AHIDB_MaxMixFreq,22050,
+				     TAG_DONE);
+				     
+	actrl = AHI_AllocAudio( AHIA_AudioID,ahiID,
+				AHIA_MixFreq,11025,
+				AHIA_Channels,1,
+				AHIA_Sounds, 1,
+				AHIA_SoundFunc,(int)&PlayerHook,
+				TAG_DONE);				     
+                       
+  return rc;
+}
+
+
+/******************************************************************************
+**** FreeAudio ****************************************************************
+******************************************************************************/
+
+/* Release the audio hardware */
+
+void FreeAudio() {
+
+  AHI_FreeAudio(actrl);
+  actrl = NULL;
+}
+ 
+
+int init_audio(void)
 {
-
+    stream = NULL;
     //SDL_InitSubSystem(SDL_INIT_AUDIO);
 
 //    desired = (SDL_AudioSpec *) malloc(sizeof(SDL_AudioSpec));
@@ -134,10 +250,43 @@ int init_sdl_audio(void)
 //    SDL_OpenAudio(desired, obtain);
 //    printf("Obtained sample rate: %d\n",obtain->freq);
 //    conf.sample_rate=obtain->freq;
+
+    OpenAHI();
+    AllocAudio();
+    
+    ULONG obtainedMixingfrequency = 0;
+    ULONG audioCallbackFrequency = 22050;    
+    AHI_ControlAudio(actrl, AHIC_MixFreq_Query, (Tag)&obtainedMixingfrequency, TAG_DONE);
+    
+    // Calculate the sample factor.
+    ULONG sampleCount = (ULONG)floor(obtainedMixingfrequency / audioCallbackFrequency);
+      
+    // 32 bits (4 bytes) are required per sample for storage (16bit stereo).
+    ULONG sampleBufferSize = (sampleCount * AHI_SampleFrameSize(AHIST_M16S));
+
+    stream = (unsigned char *)AllocVec(sampleBufferSize, MEMF_PUBLIC|MEMF_CLEAR);
+    memset(stream,0x00, sampleBufferSize);
+    sample.ahisi_Type = AHIST_M16S;
+    sample.ahisi_Address = stream; 
+    sample.ahisi_Length = sampleBufferSize;
+    
+    printf("sampleBufferSize = %d\n",sampleBufferSize);
+
+    AHI_LoadSound(0, AHIST_DYNAMICSAMPLE, &sample, actrl);
+
+    /* start playing sample 0 */
+    if(!(AHI_ControlAudio(actrl, AHIC_Play, TRUE, TAG_DONE)))
+    {
+        AHI_SetFreq(0, 11025, actrl, AHISF_IMM);
+        AHI_SetVol(0, 0x10000, 0x8000, actrl, AHISF_IMM);
+        AHI_SetSound(0, 0, 0, 0, actrl, AHISF_IMM);
+    }
+
+    
     return 1;
 }
 
-void close_sdl_audio(void) {
+void close_audio(void) {
 //    SDL_PauseAudio(1);
 //    SDL_CloseAudio();
 //    SDL_QuitSubSystem(SDL_INIT_AUDIO);
@@ -145,91 +294,18 @@ void close_sdl_audio(void) {
 //	desired = NULL;
 //	if (obtain) free(obtain);
 //	obtain = NULL;
+
+          // Stop sounds
+          AHI_ControlAudio(actrl,
+              AHIC_Play, FALSE,
+              TAG_DONE);
+   FreeAudio();
+    CloseAHI();
+
 }
 
 void pause_audio(int on) {
 //	printf("PAUSE audio %d\n",on);
 //    SDL_PauseAudio(on);
 }
-
-#else
-int dev_dsp=0;
-pthread_t audio_thread;
-volatile int paused=0;
-int buflen=0;
-
-
-void *fill_audio_data(void *ptr) {
-    printf("Update audio\n");
-
-    while(1) {
-
-        if (!paused) {
-            YM2610Update_stream(buflen/4);
-            write(dev_dsp,play_buffer,buflen);
-        }
-            
-    }
-}
-void pause_audio(int on) {
-    static init=0;
-    if (init==0) {
-        pthread_create(&audio_thread,NULL,fill_audio_data,NULL);
-        init=1;
-    }
-    	paused=on;
-}
-
-
-int init_sdl_audio(void) {
-    int format;
-    int channels=2;
-    int speed=conf.sample_rate;
-    int arg = 0x9;
-
-    dev_dsp=open("/dev/dsp",O_WRONLY);
-    if (dev_dsp==0) {
-        printf("Couldn't open /dev/dsp\n");
-        return 0;
-    }
-
-    if (ioctl(dev_dsp, SNDCTL_DSP_SETFRAGMENT, &arg)) {
-		printf(" SNDCTL_DSP_SETFRAGMENT Error\n");
-        return 0;
-	}
-
-#ifdef WORDS_BIGENDIAN
-    format = AFMT_S16_BE;
-#else	/* */
-    format = AFMT_S16_LE;
-#endif	/* */
-
-    if (ioctl(dev_dsp, SNDCTL_DSP_SETFMT, &format) == -1) {
-        perror("SNDCTL_DSP_SETFMT");
-        return 0;
-    }
-    if (ioctl(dev_dsp, SNDCTL_DSP_CHANNELS, &channels) == -1) {
-        perror("SNDCTL_DSP_CHANNELS");
-        return 0;
-    }
-    if (ioctl(dev_dsp, SNDCTL_DSP_SPEED, &speed)==-1) {
-        perror("SNDCTL_DSP_SPEED");
-        return 0;
-    }
-    
-    
-
-    if (ioctl(dev_dsp, SNDCTL_DSP_GETBLKSIZE, &buflen) == -1) {
-        return 0;
-    }
-    printf("Buf Len=%d\n",buflen);
-    buflen*=2;
-
-    return 1;
-}
-
-void close_sdl_audio(void) {
-    close(dev_dsp);
-}
-
-#endif
+ 

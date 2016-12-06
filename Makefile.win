@@ -1,17 +1,17 @@
 # Project: gngeo
 # Compiler: m68k-Amiga-OS3
 # Compiler Type: MingW 3
-# Makefile created by wxDev-C++ 6.10.2 on 05/12/16 22:44
+# Makefile created by wxDev-C++ 6.10.2 on 06/12/16 15:32
 
 CPP       = m68k-amigaos-g++.exe
 CC        = m68k-amigaos-gcc.exe
 WINDRES   = windres.exe
-OBJ       = obj/soft.o obj/2610intf.o obj/ym2610.o obj/conf.o obj/cyclone_interf.o obj/debug.o obj/drz80_interf.o obj/emu.o obj/event.o obj/fileio.o obj/frame_skip.o obj/generator68k_interf.o obj/list.o obj/main.o obj/mame_layer.o obj/mamez80_interf.o obj/memory.o obj/messages.o obj/neoboot.o obj/neocrypt.o obj/pd4990a.o obj/profiler.o obj/raze_interf.o obj/resfile.o obj/roms.o obj/screen.o obj/sound.o obj/star_interf.o obj/state.o obj/stb_image.o obj/stb_zlib.o obj/timer.o obj/transpack.o obj/unzip.o obj/video.o obj/cpu68k.o obj/cpu68k-0.o obj/cpu68k-1.o obj/cpu68k-2.o obj/cpu68k-3.o obj/cpu68k-4.o obj/cpu68k-5.o obj/cpu68k-6.o obj/cpu68k-7.o obj/cpu68k-8.o obj/cpu68k-9.o obj/cpu68k-a.o obj/cpu68k-b.o obj/cpu68k-c.o obj/cpu68k-d.o obj/cpu68k-e.o obj/cpu68k-f.o obj/reg68k.o obj/diss68k.o obj/z80.o obj/tab68k2.o obj/adler32.o obj/compress.o obj/crc32.o obj/deflate.o obj/gzclose.o obj/gzlib.o obj/gzread.o obj/gzwrite.o obj/infback.o obj/inffast.o obj/inflate.o obj/inftrees.o obj/trees.o obj/uncompr.o obj/zutil.o
-LINKOBJ   = obj/soft.o obj/2610intf.o obj/ym2610.o obj/conf.o obj/cyclone_interf.o obj/debug.o obj/drz80_interf.o obj/emu.o obj/event.o obj/fileio.o obj/frame_skip.o obj/generator68k_interf.o obj/list.o obj/main.o obj/mame_layer.o obj/mamez80_interf.o obj/memory.o obj/messages.o obj/neoboot.o obj/neocrypt.o obj/pd4990a.o obj/profiler.o obj/raze_interf.o obj/resfile.o obj/roms.o obj/screen.o obj/sound.o obj/star_interf.o obj/state.o obj/stb_image.o obj/stb_zlib.o obj/timer.o obj/transpack.o obj/unzip.o obj/video.o obj/cpu68k.o obj/cpu68k-0.o obj/cpu68k-1.o obj/cpu68k-2.o obj/cpu68k-3.o obj/cpu68k-4.o obj/cpu68k-5.o obj/cpu68k-6.o obj/cpu68k-7.o obj/cpu68k-8.o obj/cpu68k-9.o obj/cpu68k-a.o obj/cpu68k-b.o obj/cpu68k-c.o obj/cpu68k-d.o obj/cpu68k-e.o obj/cpu68k-f.o obj/reg68k.o obj/diss68k.o obj/z80.o obj/tab68k2.o obj/adler32.o obj/compress.o obj/crc32.o obj/deflate.o obj/gzclose.o obj/gzlib.o obj/gzread.o obj/gzwrite.o obj/infback.o obj/inffast.o obj/inflate.o obj/inftrees.o obj/trees.o obj/uncompr.o obj/zutil.o
-LIBS      = -L"F:/Development/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/lib" -L"F:/Development/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/lib/libb/libnix" -s -noixemul src/c2p1x1_8_c5_bm_040.o  
-INCS      = -I"F:/Development/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include" -I"." -I"src"
-CXXINCS   = -I"F:/Development/CrossCompiler/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include" -I"." -I"src"
-RCINCS    = --include-dir "F:/Development/CrossCompiler/AmiDevCpp/include"
+OBJ       = obj/soft.o obj/2610intf.o obj/ym2610.o obj/conf.o obj/cyclone_interf.o obj/debug.o obj/drz80_interf.o obj/emu.o obj/event.o obj/fileio.o obj/frame_skip.o obj/generator68k_interf.o obj/list.o obj/main.o obj/mame_layer.o obj/mamez80_interf.o obj/memory.o obj/messages.o obj/neoboot.o obj/neocrypt.o obj/pd4990a.o obj/profiler.o obj/raze_interf.o obj/resfile.o obj/roms.o obj/screen.o obj/sound.o obj/star_interf.o obj/state.o obj/stb_image.o obj/stb_zlib.o obj/timer.o obj/transpack.o obj/unzip.o obj/video.o obj/cpu68k.o obj/cpu68k-0.o obj/cpu68k-1.o obj/cpu68k-2.o obj/cpu68k-3.o obj/cpu68k-4.o obj/cpu68k-5.o obj/cpu68k-6.o obj/cpu68k-7.o obj/cpu68k-8.o obj/cpu68k-9.o obj/cpu68k-a.o obj/cpu68k-b.o obj/cpu68k-c.o obj/cpu68k-d.o obj/cpu68k-e.o obj/cpu68k-f.o obj/reg68k.o obj/diss68k.o obj/z80.o obj/tab68k2.o
+LINKOBJ   = obj/soft.o obj/2610intf.o obj/ym2610.o obj/conf.o obj/cyclone_interf.o obj/debug.o obj/drz80_interf.o obj/emu.o obj/event.o obj/fileio.o obj/frame_skip.o obj/generator68k_interf.o obj/list.o obj/main.o obj/mame_layer.o obj/mamez80_interf.o obj/memory.o obj/messages.o obj/neoboot.o obj/neocrypt.o obj/pd4990a.o obj/profiler.o obj/raze_interf.o obj/resfile.o obj/roms.o obj/screen.o obj/sound.o obj/star_interf.o obj/state.o obj/stb_image.o obj/stb_zlib.o obj/timer.o obj/transpack.o obj/unzip.o obj/video.o obj/cpu68k.o obj/cpu68k-0.o obj/cpu68k-1.o obj/cpu68k-2.o obj/cpu68k-3.o obj/cpu68k-4.o obj/cpu68k-5.o obj/cpu68k-6.o obj/cpu68k-7.o obj/cpu68k-8.o obj/cpu68k-9.o obj/cpu68k-a.o obj/cpu68k-b.o obj/cpu68k-c.o obj/cpu68k-d.o obj/cpu68k-e.o obj/cpu68k-f.o obj/reg68k.o obj/diss68k.o obj/z80.o obj/tab68k2.o
+LIBS      = -L"C:/Development/AmiDevCpp/usr/local/amiga/m68k-amigaos/lib" -L"C:/Development/AmiDevCpp/usr/local/amiga/m68k-amigaos/lib/libb/libnix" -s -noixemul ../zlib/bin/libz.a  
+INCS      = -I"C:/Development/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include" -I"." -I"src"
+CXXINCS   = -I"C:/Development/AmiDevCpp/usr/local/amiga/m68k-amigaos/sys-include" -I"." -I"src"
+RCINCS    = --include-dir "C:/DEVELO~1/AMIDEV~1/include"
 BIN       = release/gngeo.exe
 DEFINES   =  -DWORDS_BIGENDIAN -D__AMIGA__ -DAMIGA -DHAVE_CONFIG_H -DUSE_GENERATOR68K -DUSE_MAMEZ80
 CXXFLAGS  = $(CXXINCS) $(DEFINES) -m68030 -ffast-math -fsingle-precision-constant -fweb -frename-registers  -finline-functions -funit-at-a-time -fomit-frame-pointer    -s -noixemul -fexpensive-optimizations -O3
@@ -196,48 +196,3 @@ obj/z80.o: $(GLOBALDEPS) src/mamez80/z80.c src/mamez80/z80.h src/emu.h src/mamez
 
 obj/tab68k2.o: $(GLOBALDEPS) src/generator68k/tab68k2.c src/generator68k/generator.h src/emu.h
 	$(CC) -c src/generator68k/tab68k2.c -o obj/tab68k2.o $(CFLAGS)
-
-obj/adler32.o: $(GLOBALDEPS) ../zlib/adler32.c ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h
-	$(CC) -c ../zlib/adler32.c -o obj/adler32.o $(CFLAGS)
-
-obj/compress.o: $(GLOBALDEPS) ../zlib/compress.c ../zlib/zlib.h ../zlib/zconf.h
-	$(CC) -c ../zlib/compress.c -o obj/compress.o $(CFLAGS)
-
-obj/crc32.o: $(GLOBALDEPS) ../zlib/crc32.c ../zlib/crc32.h
-	$(CC) -c ../zlib/crc32.c -o obj/crc32.o $(CFLAGS)
-
-obj/deflate.o: $(GLOBALDEPS) ../zlib/deflate.c ../zlib/deflate.h ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h
-	$(CC) -c ../zlib/deflate.c -o obj/deflate.o $(CFLAGS)
-
-obj/gzclose.o: $(GLOBALDEPS) ../zlib/gzclose.c ../zlib/gzguts.h ../zlib/zlib.h ../zlib/zconf.h
-	$(CC) -c ../zlib/gzclose.c -o obj/gzclose.o $(CFLAGS)
-
-obj/gzlib.o: $(GLOBALDEPS) ../zlib/gzlib.c ../zlib/gzguts.h ../zlib/zlib.h ../zlib/zconf.h
-	$(CC) -c ../zlib/gzlib.c -o obj/gzlib.o $(CFLAGS)
-
-obj/gzread.o: $(GLOBALDEPS) ../zlib/gzread.c ../zlib/gzguts.h ../zlib/zlib.h ../zlib/zconf.h
-	$(CC) -c ../zlib/gzread.c -o obj/gzread.o $(CFLAGS)
-
-obj/gzwrite.o: $(GLOBALDEPS) ../zlib/gzwrite.c ../zlib/gzguts.h ../zlib/zlib.h ../zlib/zconf.h
-	$(CC) -c ../zlib/gzwrite.c -o obj/gzwrite.o $(CFLAGS)
-
-obj/infback.o: $(GLOBALDEPS) ../zlib/infback.c ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h ../zlib/inftrees.h ../zlib/inflate.h ../zlib/inffast.h
-	$(CC) -c ../zlib/infback.c -o obj/infback.o $(CFLAGS)
-
-obj/inffast.o: $(GLOBALDEPS) ../zlib/inffast.c ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h ../zlib/inftrees.h ../zlib/inflate.h ../zlib/inffast.h
-	$(CC) -c ../zlib/inffast.c -o obj/inffast.o $(CFLAGS)
-
-obj/inflate.o: $(GLOBALDEPS) ../zlib/inflate.c ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h ../zlib/inftrees.h ../zlib/inflate.h ../zlib/inffast.h
-	$(CC) -c ../zlib/inflate.c -o obj/inflate.o $(CFLAGS)
-
-obj/inftrees.o: $(GLOBALDEPS) ../zlib/inftrees.c ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h ../zlib/inftrees.h
-	$(CC) -c ../zlib/inftrees.c -o obj/inftrees.o $(CFLAGS)
-
-obj/trees.o: $(GLOBALDEPS) ../zlib/trees.c ../zlib/deflate.h ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h
-	$(CC) -c ../zlib/trees.c -o obj/trees.o $(CFLAGS)
-
-obj/uncompr.o: $(GLOBALDEPS) ../zlib/uncompr.c ../zlib/zlib.h ../zlib/zconf.h
-	$(CC) -c ../zlib/uncompr.c -o obj/uncompr.o $(CFLAGS)
-
-obj/zutil.o: $(GLOBALDEPS) ../zlib/zutil.c ../zlib/zutil.h ../zlib/zlib.h ../zlib/zconf.h
-	$(CC) -c ../zlib/zutil.c -o obj/zutil.o $(CFLAGS)

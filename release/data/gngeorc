@@ -44,7 +44,7 @@ scale 1
 interpolation false
 
 # Have sound?
-sound false
+sound true
 
 # Shown FPS
 showfps true
@@ -69,7 +69,7 @@ hwsurface true
 pal false
 
 # Sample rate
-samplerate 22050
+samplerate 11025
 
 # country?
 # japan, usa, europe

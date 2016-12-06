@@ -77,3 +77,10 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+*.zip
+*.rom
+*.bin
+*.sp1
+release/bios/neogeo/sp1.jipan.1024
+*.sfix
+release/bios/neogeo/sm1.sm1

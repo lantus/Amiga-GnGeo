@@ -150,7 +150,7 @@ void neogeo_reset(void) {
 
 void init_sound(void) {
 
-	if (conf.sound) init_sdl_audio();
+
 
 #ifdef ENABLE_940T
 		printf("Init all neo");
@@ -167,6 +167,8 @@ void init_sound(void) {
 		//streams_sh_start();
         printf("YM2610_sh_start()\n");		
 		YM2610_sh_start();
+		
+			if (conf.sound) init_audio();
 #endif
 	if (conf.sound)	pause_audio(0);
 		conf.snd_st_reg_create = 1;

@@ -289,8 +289,8 @@ bool load_state(char *game,int slot) {
 	    return false;
     } else if (rate!=conf.sample_rate && conf.sound) {
 	    conf.sample_rate=rate;
-	    close_sdl_audio();
-	    init_sdl_audio();
+	    close_audio();
+	    init_audio();
     }
 #else
     if (rate==0 && conf.sound) {
@@ -304,17 +304,17 @@ bool load_state(char *game,int slot) {
 	conf.sample_rate=rate;
 	if (!conf.snd_st_reg_create) {
 	    cpu_z80_init();
-	    init_sdl_audio();
+	    init_audio();
 	    //streams_sh_start();
 	    YM2610_sh_start();
 	    conf.snd_st_reg_create=1;
 	} else 
-	    init_sdl_audio();
+	    init_audio();
 	pause_audio(0);
     } else if (rate!=conf.sample_rate && conf.sound) {
 	conf.sample_rate=rate;
-	close_sdl_audio();
-	init_sdl_audio();
+	close_audio();
+	init_audio();
     }
 #endif
 
